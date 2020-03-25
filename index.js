@@ -19,29 +19,18 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     let moviesContainer = document.getElementById("movies-container");
-    
-    // moviesContainer.innerHTML = renderMovies(movieData);
 
     document.getElementById("search-form").addEventListener("submit", function(e){
         e.preventDefault();
-        moviesContainer.innerHTML = renderMovies(movieData);
+        var searchString = document.getElementById("search-bar").value;
+        var urlEncodedSearchString = encodeURIComponent(searchString);
+        // var callURL = ("http://www.omdbapi.com/?apikey=f118d99d&s=" + urlEncodedSearchString);
+        var callURL = ("http://www.omdbapi.com/?i=tt3896198&apikey=f118d99d&s=" + urlEncodedSearchString);
+        axios.get(callURL)
+            .then(function(response){
+                moviesContainer.innerHTML = renderMovies(response.data.Search);
+            });
     })
-
-    // function saveToWatchlist (imdbID) {
-    //     let movie = movieData.find(function(currentMovie){
-    //         return currentMovie.imdbID == imdbID;
-    //     });
-    //     let watchlistJSON = localStorage.getItem("watchlist");
-    //     let watchlist = JSON.parse(watchlistJSON);
-    //     if (watchlist === null) {
-    //         watchlist = [];
-    //     }
-    //     watchlist.push(movie);
-    //     watchlistJSON = JSON.stringify(watchlist);
-    //     localStorage.setItem("watchlist", watchlistJSON);
-
-    // }
-
 });
 
 function saveToWatchlist (imdbID) {
